@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<style>
+.red{
+  
+     padding:5px 20px;
+     box-sizing: border-box;
+    display: inline-block;
+   background-color: black;
+   box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    color :yellow;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    margin:10px;
+    border-radius: 10px;
+}
+.red:hover{
+    cursor: pointer;
+    background-color: white;
+    border:1px solid grey;
+    color:blue;
+}
+#con{
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    width:400px;
+
+    min-height: 300px;
+    max-height: auto;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    border-radius: 10px;
+  
+}
+#list{
+
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100vw;
+    height:100vh;
+    padding:0px;
+    margin:0px;
+    flex-direction: column;
+  
+}
+#con  h2{
+    text-align: center;
+    color:blue
+   
+}
+.status{
+    width:auto;
+    height:auto;
+    background-color: green;
+    border-radius: 12px;
+    padding:10px;
+    margin-bottom: 5px;
+    animation: ani 1s infinite;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+.status:hover{
+   cursor: pointer;
+   background-color: black;
+   color:white;
+}
+
+@keyframes ani {
+    0%{
+        background-color: yellow;
+        box-shadow: 0px 0px 15px 3px red;
+    
+    }
+
+    100%{
+        background-color: pink;
+        box-shadow: 0px 0px 5px -3px green;
+    
+    }
+}
+
+#videoid{
+  
+    display: flex;
+    flex-direction: row;
+    width:200px;
+    height:200px;
+    margin-left:20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+.videoclass{
+    flex-direction: column !important ;
+    width:500px !important;
+    height:800px !important;
+}
+video{
+    width:100%;
+    height:50%;
+    border:1px solid black;
+  
+   background: url(https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg);
+   background-size: cover;
+   background-position: center;
+}
+</style>
+<body>
+    <div id="status" onclick="acceptf()"></div>
+    <div id="videoid">
+        <video id="localv"></video>
+        <video id="remotev"></video>
+    </div>
+    <div id ="con">
+        
+        <h2>Online users</h2>
+        <div id="list"></div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const peer = new RTCPeerConnection({
+            iceServers:[
+                {
+                    urls:"stun:stun.stunprotocol.org"
+                }
+            ]
+        })
+        let myid;
+      socket.on("myid",(id)=>{
+        myid = id;
+        console.log("id =" , id, "my id = " ,myid)
+      })
+        socket.on("userlist",(d)=>{
+             
+            const div = document.getElementById("list");
+              div.innerHTML = ""
+            d.forEach(id =>{
+                if(id == myid){
+
+                }else{
+                  div.innerHTML += `<p class="red" id="${id}" onclick="calling('${id}')" >${id}</p>`
+                }
+                
+            })
+            console.log(d)
+        })
+
+        const con = document.getElementById("con");
+        const videocon = document.getElementById("videoid")
+
+        // createcall or outgoing call
+         async function calling(to){
+         
+            con.style.display = "none";
+            videocon.classList.add("videoclass")
+
+            const status = document.getElementById("status");
+            status.innerHTML = "calling....";
+            status.classList.add("status")
+            document.getElementById(to).style.backgroundColor = "red"
+            
+            //first get track your local stream in peer connection so that peer can create offer with it;
+            const localstream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+            // show your local video;
+            document.getElementById("localv").srcObject = localstream;
+            document.getElementById("localv").play();
+           //track and add to the peer and send offer
+            localstream.getTracks().forEach( track =>{
+                peer.addTrack(track,localstream);
+            })
+            
+            //creating offer and send to the user with my offer
+
+             const localoffer = await peer.createOffer();
+             await peer.setLocalDescription( new RTCSessionDescription(localoffer))
+             socket.emit("outgoingcall",{fromoffer:localoffer, to })
+
+           
+         }
+
+
+        // incommingcall 
+        let caller;let calleroffer;
+
+          socket.on("incommingcall", async data =>{
+         const status = document.getElementById("status");
+         console.log("incomming call add to the class")
+         status.classList.add("status")
+         status.innerHTML = "incommiing:call"
+
+            const {from,offer} = data;
+            caller = from,calleroffer = offer;
+
+       // peering to other person offer here..
+         await peer.setRemoteDescription(new RTCSessionDescription(offer))
+        
+
+      
+        })
+
+
+        // callAccept
+       async function acceptf(){
+// sending answer offer to accept;
+         con.style.display = "none";
+         videocon.classList.add("videoclass")
+
+         const status = document.getElementById("status");
+         status.innerHTML = "Answering....";
+         status.classList.add("status")
+        console.log("answering..")
+// for creating answersoffer i need to add localstream to peer;
+         const mystream = await navigator.mediaDevices.getUserMedia({video:true,audio:true}); 
+         document.getElementById("localv").srcObject = localstream;
+         document.getElementById("localv").play();
+         for (const track of mystream.getTracks()){
+                peer.addTrack(track,mystream);
+          }
+
+
+         // creating answers offer to send
+const answeroffer = await peer.createAnswer();
+await peer.setLocalDescription(new RTCSessionDescription(answeroffer))
+
+         socket.emit("callaccepted",{answer: answeroffer, to: caller})
+      
+       }
+
+      // incomming answer
+         socket.on("incomminganswer", async data => {
+            console.log("incomming anser is comignnnnnnnnn")
+            const status = document.getElementById("status");
+            status.innerHTML = "Answering....";
+             const {offer} = data;
+            await peer.setRemoteDescription(new RTCSessionDescription(offer))
+
+            
+         })
+      
+         
+      //showing remote video
+        
+        peer.ontrack = async ({streams:[stream]}) =>{
+            const status = document.getElementById("status");
+            status,innerText = "incomming stream";
+            console.log(stream);
+            
+            const remotev = document.getElementById("remotev");
+            remotev.srcObject = stream;
+            remotev.play();
+        }
+   
+        
+   
+       
+    </script>
+</body>
+</html>
