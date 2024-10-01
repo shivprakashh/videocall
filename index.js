@@ -14,10 +14,10 @@ const io = socketio(server);
 
 app.use(express.static(path.join(__dirname,"public")))
 app.get("/",(req,resp)=>{
-    resp.sendFile(path.join(__dirname,"public","index.html"))
+    resp.sendFile(path.join(__dirname,"public","about.html"))
 })
 app.get("/about",(req,resp)=>{
-  resp.sendFile(path.join(__dirname,"public","about.html"))
+  resp.sendFile(path.join(__dirname,"public","index.html"))
 })
 const userlist =  new Set();
 io.on("connection",(socket)=>{
