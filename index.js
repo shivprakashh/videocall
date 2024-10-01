@@ -1,9 +1,14 @@
 const express = require("express");
 const app = express();
-const http = require("http")
+const https = require("https")
 const path = require("path");
 const socketio = require("socket.io")
-const server = http.createServer(app);
+const fs = require("fs")
+const options = {
+  key: fs.readFileSync("server.key"),
+  cert: fs.readFileSync("server.cert")
+}
+const server = https.createServer(options,app);
 const io = socketio(server);
 
 
@@ -21,20 +26,32 @@ io.on("connection",(socket)=>{
     userlist.add(socket.id);
     socket.emit("myid",socket.id);
     io.emit("userlist",Array.from(userlist));
-  //outgoing call handling
+  
+    //outgoing call handling
    socket.on("outgoingcall", data =>{
     const {fromoffer,to} = data;
-    
+    console.log("enter into outgoincall..")
+    userlist.delete(to);
+    userlist.delete(socket.id);
+    io.emit("userlist",Array.from(userlist));
     socket.to(to).emit("incommingcall",{from:socket.id,offer:fromoffer})
    })
   
    // callaccepted ..
    socket.on("callaccepted", data =>{
+    console.log("enter into callaccepted;",data)
      const {answer,to} = data;
-     socket.to(to).emit("incomminganswer",{from:socket.id,offer:answer})
+     socket.to(to).emit("incomminganswer",{from:socket.id,answer:answer})
+
    })
-   
-   
+   // icecandidate;
+   socket.on('icecandidate', (data) => {
+    socket.to(data.to).emit('icecandidate', {
+        candidate: data.candidate,
+    });
+
+});
+  
    socket.on("disconnect",()=>{
         console.log("user is disconnectedd//")
         userlist.delete(socket.id);
@@ -42,6 +59,8 @@ io.on("connection",(socket)=>{
     })
 })
   
+//
+
 
 server.listen(4000,()=>{
     console.log("server is running..")

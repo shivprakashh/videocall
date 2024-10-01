@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GetUserMedia Test</title>
 </head>
 <body>
-    <h1>shiv prakash your page is started.</h1>
+    <h1>Camera Test</h1>
+    <video id="localv" autoplay playsinline></video>
+    <script>
+        async function initCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                alert("exist camera")
+                try {
+                    const localstream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                    document.getElementById("localv").srcObject = localstream;
+                } catch (error) {
+                    console.error("Error accessing media devices.", error);
+                }
+            } else {
+                alert("error")
+                console.error("getUserMedia is not supported in this browser.");
+            }
+        }
+        initCamera();
+    </script>
 </body>
 </html>

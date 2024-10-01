@@ -7,18 +7,26 @@
     
 </head>
 <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Optional, but helps with sizing */
+}
 .red{
-  
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
      padding:5px 20px;
      box-sizing: border-box;
     display: inline-block;
-   background-color: black;
+   background-color: white;
    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
-    color :yellow;
+    color :green;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    margin:10px;
+   margin-top: 7px;
     border-radius: 10px;
+
 }
 .red:hover{
     cursor: pointer;
@@ -29,38 +37,60 @@
 #con{
     flex-direction: column;
     display: flex;
-    justify-content: center;
+  
     align-items: center;
-   
-    width:400px;
 
-    min-height: 300px;
-    max-height: auto;
+    width:80%;
+      /* From https://css.glass */
+background: rgba(255, 255, 255, 0.31);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.7px);
+-webkit-backdrop-filter: blur(6.7px);
+border: 1px solid rgba(255, 255, 255, 0.12);
+    min-height: 50%;
+ 
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
     border-radius: 10px;
+    margin-top: 100px;
+    padding:10px;
+    border-top: 5px solid rgb(248, 247, 137);
+  
+    box-sizing: border-box;
+    animation: con 1s ease-in-out;
+
   
 }
 #list{
 
 display: flex;
-justify-content: center;
+margin-top: 20px;
 align-items: center;
 flex-direction: column;
+height:200px;
+overflow-y: auto;
+}
+html{
+    height:100%;
 }
 body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:100vw;
-    height:100vh;
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgb(249, 237, 155) 0%, rgb(255, 255, 255) 100%);
+    min-width:100%;
+    height:100%;
     padding:0px;
     margin:0px;
+    box-sizing: border-box;
     flex-direction: column;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+
+    align-items: center;
   
 }
 #con  h2{
     text-align: center;
-    color:blue
+    color:black;
    
 }
 .status{
@@ -69,9 +99,15 @@ body{
     background-color: green;
     border-radius: 12px;
     padding:10px;
-    margin-bottom: 5px;
+    position: absolute;
+    top:10px;
+    z-index: 2;
     animation: ani 1s infinite;
-    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    font-size: 10px;
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+
 }
 .status:hover{
    cursor: pointer;
@@ -93,184 +129,287 @@ body{
     }
 }
 
-#videoid{
-  
-    display: flex;
-    flex-direction: row;
-    width:200px;
-    height:200px;
-    margin-left:20px;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
+
+.localv{
+     width:30%;
+     height:30%;
+     border-radius: 12px;
+     position: absolute;
+     top:10px;
+     left:10px;
+     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+     border:none;
+     z-index: 1;
+     object-fit: cover;
 
 }
+.remotev{
+ width:100%;
+ height:100%;
+object-fit: cover;
+ z-index: 0;
+ 
+}
+#videoid{
+    flex-direction: column ;
+    display: none;
+    width:100% ;
+    height:100%;
+    position: absolute;
+    top:0px;
+    left:0px;
+    overflow: hidden;
+  margin-top: 0px;
 
+}
 .videoclass{
-    flex-direction: column !important ;
-    width:500px !important;
-    height:800px !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
 }
 video{
-    width:100%;
-    height:50%;
+
     border:1px solid black;
   
    background: url(https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg);
    background-size: cover;
    background-position: center;
 }
+#status{
+    width:100px;
+    height:auto;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    position: relative;top:10px;
+    right:10px;
+    z-index: 2;
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+}
+#end{
+    position: absolute;
+    bottom:40px;
+    right:40px;
+    font-size: large;
+    padding:7px 16px;
+    border-radius: 10px;
+    border:none;
+    background-color: red;
+    color:white;
+
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+#about{
+    width:80%;
+    height:auto;
+    margin-top: 10px;
+    /* From https://css.glass */
+background: rgba(255, 255, 255, 0.31);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.7px);
+-webkit-backdrop-filter: blur(6.7px);
+border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    padding:17px 13px;
+   
+    border-bottom: 4px solid rgb(2, 255, 255);
+}
+#about p {
+      font-size: 13px;
+      color:rgb(61, 59, 59);
+      margin-bottom: 8px;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+#about span{
+    color:blue;
+}
+.h4{
+    font-size: 14px !important;
+    color:rgb(0, 203, 254) !important;
+    margin-bottom: 4px !important;
+   
+    
+}
+@keyframes con {
+    0%{ margin-bottom: 100px;}
+
+ 
+       
+    
+    100%{
+            margin-bottom: 0px;
+       
+    }
+}
 </style>
 <body>
     <div id="status" onclick="acceptf()"></div>
     <div id="videoid">
-        <video id="localv"></video>
-        <video id="remotev"></video>
+        <video id="localv" autoplay muted></video>
+        <video id="remotev" autoplay></video>
+        <button id="end">END</button>
     </div>
-    <div id ="con">
-        
-        <h2>Online users</h2>
+    <div id="con">
+        <h2>Online Users</h2>
         <div id="list"></div>
     </div>
-    
+    <div id="about">
+        <p class="h4">About This Page</p>
+        <p>This is a video calling website.Created by <span>Thet Naing Tun / Shiv Prakash</span> in 2024 october 1.</p>
+        <p>In this website you can easily video chat with anyone who is online.No name need,No account need to create
+            to use this video chat.Just click someone who is online and enjoy your day.
+        </p>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        const peer = new RTCPeerConnection({
-            iceServers:[
-                {
-                    urls:"stun:stun.stunprotocol.org"
-                }
-            ]
-        })
-        let myid;
-      socket.on("myid",(id)=>{
-        myid = id;
-        console.log("id =" , id, "my id = " ,myid)
-      })
-        socket.on("userlist",(d)=>{
-             
-            const div = document.getElementById("list");
-              div.innerHTML = ""
-            d.forEach(id =>{
-                if(id == myid){
-
-                }else{
-                  div.innerHTML += `<p class="red" id="${id}" onclick="calling('${id}')" >${id}</p>`
-                }
-                
-            })
-            console.log(d)
-        })
-
+        const status = document.getElementById("status");
         const con = document.getElementById("con");
-        const videocon = document.getElementById("videoid")
-
-        // createcall or outgoing call
-         async function calling(to){
-         
-            con.style.display = "none";
-            videocon.classList.add("videoclass")
-
-            const status = document.getElementById("status");
-            status.innerHTML = "calling....";
-            status.classList.add("status")
-            document.getElementById(to).style.backgroundColor = "red"
-            
-            //first get track your local stream in peer connection so that peer can create offer with it;
-            const localstream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
-            // show your local video;
-            document.getElementById("localv").srcObject = localstream;
-            document.getElementById("localv").play();
-           //track and add to the peer and send offer
-            localstream.getTracks().forEach( track =>{
-                peer.addTrack(track,localstream);
-            })
-            
-            //creating offer and send to the user with my offer
-
-             const localoffer = await peer.createOffer();
-             await peer.setLocalDescription( new RTCSessionDescription(localoffer))
-             socket.emit("outgoingcall",{fromoffer:localoffer, to })
-
-           
-         }
-
-
-        // incommingcall 
-        let caller;let calleroffer;
-
-          socket.on("incommingcall", async data =>{
-         const status = document.getElementById("status");
-         console.log("incomming call add to the class")
-         status.classList.add("status")
-         status.innerHTML = "incommiing:call"
-
-            const {from,offer} = data;
-            caller = from,calleroffer = offer;
-
-       // peering to other person offer here..
-         await peer.setRemoteDescription(new RTCSessionDescription(offer))
-        
-
-      
-        })
-
-
-        // callAccept
-       async function acceptf(){
-// sending answer offer to accept;
-         con.style.display = "none";
-         videocon.classList.add("videoclass")
-
-         const status = document.getElementById("status");
-         status.innerHTML = "Answering....";
-         status.classList.add("status")
-        console.log("answering..")
-// for creating answersoffer i need to add localstream to peer;
-         const mystream = await navigator.mediaDevices.getUserMedia({video:true,audio:true}); 
-         document.getElementById("localv").srcObject = localstream;
-         document.getElementById("localv").play();
-         for (const track of mystream.getTracks()){
-                peer.addTrack(track,mystream);
-          }
-
-
-         // creating answers offer to send
-const answeroffer = await peer.createAnswer();
-await peer.setLocalDescription(new RTCSessionDescription(answeroffer))
-
-         socket.emit("callaccepted",{answer: answeroffer, to: caller})
-      
-       }
-
-      // incomming answer
-         socket.on("incomminganswer", async data => {
-            console.log("incomming anser is comignnnnnnnnn")
-            const status = document.getElementById("status");
-            status.innerHTML = "Answering....";
-             const {offer} = data;
-            await peer.setRemoteDescription(new RTCSessionDescription(offer))
-
-            
-         })
-      
-         
-      //showing remote video
-        
-        peer.ontrack = async ({streams:[stream]}) =>{
-            const status = document.getElementById("status");
-            status,innerText = "incomming stream";
-            console.log(stream);
-            
-            const remotev = document.getElementById("remotev");
-            remotev.srcObject = stream;
-            remotev.play();
+        const videocon = document.getElementById("videoid");
+        const remotev = document.getElementById("remotev");
+        const localv = document.getElementById("localv");
+        const about = document.getElementById("about");
+        let peer;
+    
+        const iceServers = [
+            { urls: "stun:stun.l.google.com:19302" },
+            { urls: "stun:stun1.l.google.com:19302" },
+            { urls: "stun:stun2.l.google.com:19302" }
+        ];
+    
+        let myid;
+        socket.on("myid", (id) => {
+            myid = id;
+            console.log("id =", id, "my id =", myid);
+        });
+    
+        socket.on("userlist", (d) => {
+            const div = document.getElementById("list");
+            div.innerHTML = "";
+            d.forEach(id => {
+                if (id !== myid) {
+                    div.innerHTML += `<p class="red" id="${id}" onclick="calling('${id}')" >${id}</p>`;
+                }
+            });
+            console.log(d);
+        });
+    let localstream;
+        async function createPeerConnection(callerId) {
+            peer = new RTCPeerConnection({ iceServers });
+             localstream = localv.srcObject;
+    
+            // Add local stream tracks to peer connection
+            localstream.getTracks().forEach(track => peer.addTrack(track, localstream));
+    
+            peer.ontrack = event => {
+                
+                remotev.srcObject = event.streams[0];
+                
+            };
+    
+            peer.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit("icecandidate", { candidate: event.candidate, to: callerId });
+                }
+            };
         }
-   
+    
+        socket.on("icecandidate", async (data) => {
+            const { candidate } = data;
+            if (candidate) {
+                await peer.addIceCandidate(new RTCIceCandidate(candidate));
+            }
+        });
+    
+        async function calling(to) {
+             about.style.display = "none";
+            remotev.classList.add("remotev");
+            localv.classList.add("localv");
+            con.style.display = "none";
+            videocon.classList.add("videoclass");
+            status.innerHTML = "Calling....";
+            status.classList.add("status");
+            document.getElementById(to).style.backgroundColor = "red";
+    
+            try {
+                await createPeerConnection(to);
+                const localOffer = await peer.createOffer();
+                await peer.setLocalDescription(new RTCSessionDescription(localOffer));
+                socket.emit("outgoingcall", { fromoffer: localOffer, to });
+            } catch (error) {
+                console.error("Error accessing media devices.", error);
+                status.innerHTML = "Error accessing camera/microphone: " + error.message;
+                status.classList.add("error");
+            }
+        }
+    
+        let caller;
+let calleroffer;
+
+// Incoming call handler
+socket.on("incommingcall", async data => {
+  
+    status.innerHTML = "Receiving call...";
+    status.classList.add("status");
+    console.log("Incoming call...");
+    status.style.display ="block";
+    const { from, offer } = data;
+    caller = from; // Store the caller's ID
+    calleroffer = offer; // Store the offer
+
+    await createPeerConnection();
+    await peer.setRemoteDescription(new RTCSessionDescription(offer));
+});
+
+// Accept function to be called when user clicks to accept the call
+async function acceptf() {
+    about.style.display = "none";
+    remotev.classList.add("remotev");
+            localv.classList.add("localv");
         
-   
-       
+            
+    status.style.display ="none";
+    console.log("Answering...");
+    con.style.display = "none";
+    videocon.classList.add("videoclass");
+    const answeroffer = await peer.createAnswer();
+    await peer.setLocalDescription(new RTCSessionDescription(answeroffer));
+
+    // Send the answer offer to the caller
+    socket.emit("callaccepted", { answer: answeroffer, to: caller });
+}
+
+    
+        socket.on("incomminganswer", async data => {
+            const { answer } = data;
+            status.style.display = "none";
+            await peer.setRemoteDescription(new RTCSessionDescription(answer));
+        });
+    
+        const getUserMedia = async () => {
+            try {
+                const user = await navigator.mediaDevices.getUserMedia({ video: true,audio:true });
+                localv.srcObject = user;
+                localstream = user;
+            
+            } catch (error) {
+                alert(`Error accessing media devices: ${error.message}`);
+            }
+        };
+    
+        window.addEventListener("load", async () => {
+            await getUserMedia();
+        });
+
+const endcall = document.getElementById("end");
+endcall.addEventListener("click",async()=>{
+
+ location.reload()
+})
     </script>
+    
 </body>
 </html>
