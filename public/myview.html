@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream Example</title>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background-color: black;
+            color: white;
+        }
+        p {
+            text-align: center;
+        }
+        #con {
+            width: 100vw;
+            height: 900px;
+            background-color: red;
+            display: flex;
+            overflow-y: auto;
+            flex-direction: row;
+        }
+        video {
+            margin: 10px;
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <p>Hello ..... I am Thet Naing Tun, also known as "DON".</p>
+    <div id="con">
+        <video controls>
+            <source src="https://localhost:4000/video/recording-1PSg1JACZvQbN6U4AAAV.webm"video/webm">
+            Your browser does not support the video tag.
+        </video>
+        
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const con = document.getElementById("con");
+
+        socket.on("gettingv", (data) => {
+    console.log(`Recording available at: ${data.src}`);
+
+    const videoElement = document.createElement('video');
+    videoElement.src = data.src; // Use the path sent from the server
+    videoElement.controls = true;
+
+    // Append to the video container
+    con.appendChild(videoElement);
+
+    // Play the video once metadata is loaded
+    videoElement.onloadedmetadata = () => {
+        videoElement.play().catch((error) => {
+            console.error("Playback error:", error);
+        });
+    };
+
+    videoElement.onerror = (event) => {
+        console.error("Video error:", event.message || "Unknown error");
+    };
+});
+
+
+    </script>
+</body>
+</html>
