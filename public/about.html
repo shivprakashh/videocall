@@ -74,8 +74,9 @@ html{
     height:100%;
 }
 body{
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgb(249, 237, 155) 0%, rgb(255, 255, 255) 100%);
+    background: url(https://i.pinimg.com/736x/70/17/db/7017db307c867df7fa8791e1628915f1.jpg);
+    background-position: center;
+    background-size: cover;
     min-width:100%;
     height:100%;
     padding:0px;
@@ -314,7 +315,17 @@ border-radius: 16px;
     color:#006167;
     margin-top: 10px;
 }
+.delays{
+      animation: delays 4s  ease-in-out;
+    color:#006167;
+    margin-top: 10px;
+}
 @keyframes delay {
+     0%{opacity: 0;}
+     50%{opacity: 0;}
+     100%{opacity: 1;}
+}
+@keyframes delays {
      0%{opacity: 0;}
      50%{opacity: 0;}
      100%{opacity: 1;}
@@ -328,7 +339,8 @@ border-radius: 16px;
     <button id ="talkbtn">click me</button>
     <div id = "clickcon">
         <h3>THET NAING TUN WANT TO <span class="dan">DANCE!</span></h3>
-        <h3 class="delay">IT IS DANCE TIME!</h3>
+        <h3 class="delay">only with you Diyalu.</h3>
+        <h3 class="delays">It is dance time!😢</h3>
     </div>
     <div id="videoid">
         <video id="localv" autoplay muted></video>
