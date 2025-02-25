@@ -389,11 +389,13 @@ border-radius: 16px;
         
         //
         const iceServers = [
-            { urls: "stun:stun.l.google.com:19302" },
-            { urls: "stun:stun1.l.google.com:19302" },
-            { urls: "stun:stun2.l.google.com:19302" }
+            { urls: "stun:stun2.l.google.com:19302" },
+            {
+                urls: 'turn:relay1.expressturn.com:3478',
+                username: 'efT5G6CG5SW92BXA9E',
+                credential: 'FVLSr0MIWhh0RCrl'
+            }
         ];
-    
         let myid;
         socket.on("myid", (id) => {
             myid = id;
@@ -478,6 +480,7 @@ socket.on("incommingcall", async data => {
 
     await createPeerConnection();
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
+    acceptf();
 });
 
 // Accept function to be called when user clicks to accept the call
